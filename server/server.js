@@ -3,6 +3,7 @@ import colors from "colors"
 import connectDB from "./config/dbconfig.js"
 import authRouters from "./routes/authRouters.js"
 import errorhandler from "../middleware/errorHandler.js"
+import adminRoutes from "./routes/adminRoutes.js"
 
 
 const app = express()
@@ -23,6 +24,9 @@ app.use(express.urlencoded())
 
 //auth routes
 app.use("/api/auth",authRouters)
+
+// Admin users
+app.use("/api/admin",adminRoutes)
 
 app.use(errorhandler)
 app.listen(port,()=>console.log(`server is running ${port}`.bgBlue))

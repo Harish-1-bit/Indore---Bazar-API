@@ -70,6 +70,12 @@ const loginuser=async(req,res)=>{
     }
 }
 
+const privateAccess = (req,res)=>{
+    res.json({
+        msg :`Request is made by ${req.user.name}`
+    })
+}
+
 const genrateToken =(id) =>{
     const token = jwt.sign({id},process.env.JWT_SECURE,{expiresIn:'30d'})
     return token
@@ -77,7 +83,8 @@ const genrateToken =(id) =>{
 
 const authController={
     registerUse,
-    loginuser
+    loginuser,
+    privateAccess
 }
 
 export default authController
