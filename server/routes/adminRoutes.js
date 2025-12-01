@@ -1,10 +1,13 @@
 import express from "express";
 import adminControllers from "../controllers/adminControllers.js";
-import adminProtect from "../middleware/adminMiddleware.js";
+import protect from "../middleware/authMiddleware.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/user", adminProtect ,adminControllers.getUsers)
+router.get("/user", protect.forAdmin, adminControllers.getUsers);
+router.put("/user/:uid", protect.forAdmin, adminControllers.updateUser);
+router.get("/order", protect.forAdmin, adminControllers.getAllorder);
+router.post("/shop/", protect.forAdmin, adminControllers.createShop);
+router.put("/shop/:sid", protect.forAdmin, adminControllers.updateShop);
 
-
-export default router
+export default router;
