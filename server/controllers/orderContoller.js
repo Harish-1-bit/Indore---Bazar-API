@@ -1,5 +1,5 @@
 const getOrders = async (req,res) => {
-    res.send("get all orders")
+res.send("get all orders")
 }
 
 const getOrder = async (req,res) => {

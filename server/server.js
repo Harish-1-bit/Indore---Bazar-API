@@ -8,6 +8,7 @@ import shopOwnerRoutes from "./routes/shopOwnerRoutes.js"
 import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderroutes from "./routes/orderroutes.js";
+import shoproutes from "./routes/shoproutes.js";
 
 const app = express();
 
@@ -41,6 +42,9 @@ app.use("/api/cart",cartRoutes)
 
 // Order Routes
 app.use("/api/orders",orderroutes)
+
+// shop Routes
+app.use("/api/shops",shoproutes)
 
 app.use(errorhandler);
 app.listen(port, () => console.log(`server is running ${port}`.bgBlue));

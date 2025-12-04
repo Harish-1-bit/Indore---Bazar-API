@@ -1,10 +1,11 @@
 import express from "express";
 import shopOwnerController from "../controllers/shopOwnerController.js";
 import protect from "../middleware/authMiddleware.js";
+import upload from "../middleware/fileUploadMidleware.js";
 
 const router = express.Router()
 
-router.post("/add-product",protect.forAuthuser,shopOwnerController.addProduct)
+router.post("/add-product",protect.forAuthuser,upload.single("productImage"),shopOwnerController.addProduct)
 
 router.put("/product/:pid",protect.forAuthuser,shopOwnerController.updateProduct)
 
