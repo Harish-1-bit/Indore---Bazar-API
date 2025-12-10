@@ -10,6 +10,6 @@ router.get("/:id",protect.forAuthuser,orderController.getOrder)
 
 router.post("/create",protect.forAuthuser,orderController.createOrder)
 
-router.put("/:id",protect.forAuthuser,orderController.cancelOrder)
+router.put("/:oid",protect.forAuthuser,orderController.cancelOrder)
 
 export default router

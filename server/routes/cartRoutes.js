@@ -10,6 +10,8 @@ router.post("/add",protect.forAuthuser,cartContoller.addCart)
 
 router.put("/:cid",protect.forAuthuser,cartContoller.updateCart)
 
-router.delete("/:cid",protect.forAuthuser,cartContoller.removeCart)
+router.delete("/:productId",protect.forAuthuser,cartContoller.removeCart)
+
+router.post("/clear",protect.forAuthuser,cartContoller.clearCart)
 
 export default router

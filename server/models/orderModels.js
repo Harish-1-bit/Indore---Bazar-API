@@ -18,8 +18,21 @@ const orderSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        enum:["pending","deliverded","dispatched","cancelled"],
+        enum:["placed","deliverded","dispatched","cancelled"],
         required:true
+    },
+    isDiscount:{
+        type:Boolean,
+        required:true,
+        default:false
+    },
+    coupon:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Coupon",
+    },
+    totalBill:{
+        type:Number,
+        required:true,
     }
 },{
     timestamps:true

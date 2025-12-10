@@ -15,4 +15,6 @@ router.post("/create-shop",protect.forAuthuser,shopOwnerController.addShop)
 
 router.put("/shop/:sid",protect.forAuthuser,shopOwnerController.updateShop)
 
+router.post("/coupon",protect.forAuthuser,shopOwnerController.createCoupon)
+
 export default router

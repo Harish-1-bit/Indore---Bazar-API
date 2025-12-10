@@ -69,6 +69,7 @@ const updateShop = async (req, res) => {
   res.status(201).json(updateShop)
 };
 
+
 const adminControllers = {
   getUsers,
   getAllorder,
