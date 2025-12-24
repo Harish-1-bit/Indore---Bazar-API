@@ -1,14 +1,27 @@
 import Cart from "../models/cartModels.js"
-import Shop from "../models/cartModels.js"
 import Coupon from "../models/couponModels.js"
 import Order from "../models/orderModels.js"
 
 const getOrders = async (req,res) => {
-res.send("get all orders")
+    const userId=req.user._id
+    const order = await Order.find({user:userId}).populate("user").populate("shop").populate("coupon").populate("shop")
+
+    if(!order){
+        res.status(404)
+        throw new Error("Order not found")
+    }
+    res.status(200).json(order)
 }
 
 const getOrder = async (req,res) => {
-    res.send("get order")
+    console.log(req.params.oid)
+    const order = await Order.findById(req.params.oid).populate("user").populate("shop").populate("coupon").populate("shop")
+    
+    if(!order){
+        res.status(404)
+        throw new Error("Order not found")
+    }
+    res.status(200).json(order)
 }
 
 const createOrder = async (req,res) => {
@@ -27,6 +40,14 @@ const createOrder = async (req,res) => {
         throw new Error("Cart not Found")
     }
 
+    let billedProducts=cart.products.map((item)=>{
+        return{
+            product:item.product._id,
+            qty:item.qty,
+            purchasedPrice:item.product.price
+        }
+    })
+
     const totalBill = cart.products.reduce((acc, item)=>{
         return acc + item.product.price * item.qty
     },0)
@@ -34,7 +55,7 @@ const createOrder = async (req,res) => {
     let shopId=cart.products[0].product.shop._id
     const order = new Order({
         user:userId,
-        cart:cart,
+        products:billedProducts,
         shop:shopId,
         status:"placed",
         isDiscount:couponExist?true: false,
@@ -42,10 +63,13 @@ const createOrder = async (req,res) => {
         totalBill:totalBill - discount
     })
     await order.save()
+    await order.populate("products.product")
     if(!order){
         res.status(409)
         throw new Error("Order is not placed")
     }
+
+    await cart.deleteOne({user:userId})
     res.status(201).json(order)
 }
 

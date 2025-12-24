@@ -10,6 +10,7 @@ import cartRoutes from "./routes/cartRoutes.js";
 import orderroutes from "./routes/orderroutes.js";
 import shoproutes from "./routes/shoproutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
+import chatBotRoutes from "./routes/chatBotRoutes.js";
 
 const app = express();
 
@@ -49,6 +50,9 @@ app.use("/api/shops",shoproutes)
 
 // Coupons Routes
 app.use("/api/coupon",couponRoutes)
+
+// Chatbot Routes
+app.use("/api/chat",chatBotRoutes)
 
 app.use(errorhandler);
 app.listen(port, () => console.log(`server is running ${port}`.bgBlue));

@@ -9,6 +9,8 @@ router.post("/add-product",protect.forAuthuser,upload.single("productImage"),sho
 
 router.put("/product/:pid",protect.forAuthuser,shopOwnerController.updateProduct)
 
+router.get("/order/",protect.forAuthuser,shopOwnerController.getMyShoporder)
+
 router.put("/order/:oid",protect.forAuthuser,shopOwnerController.updateOrder)
 
 router.post("/create-shop",protect.forAuthuser,shopOwnerController.addShop)

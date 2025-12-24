@@ -26,7 +26,7 @@ const getAllshops = async (req,res)=>{
 }
 
 const getAllorder = async (req, res) => {
-      const allOrders = await Order.find()
+      const allOrders = await Order.find().populate("user").populate("shop").populate("coupon").populate("shop")
     if(!allOrders){
         res.status(404)
         throw new Error("Orders Not Found")

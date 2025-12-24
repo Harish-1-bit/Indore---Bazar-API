@@ -6,11 +6,25 @@ const orderSchema = new mongoose.Schema({
         ref:"User",
         required:true
     },
-    cart:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Cart",
-        required:true
-    },
+    products:[{
+        product:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Product",
+            required:true
+        },
+        qty:{
+            type:Number,
+            required:true,
+            min:[1,"Quantity could not be less then 1"],
+            default:1 
+        },
+        purchasedPrice:{
+            type:Number,
+            required:true,
+             
+        },
+        _id:false
+    }],
     shop:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Shop",

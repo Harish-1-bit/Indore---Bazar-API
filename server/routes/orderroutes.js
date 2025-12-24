@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get("/",protect.forAuthuser,orderController.getOrders)
 
-router.get("/:id",protect.forAuthuser,orderController.getOrder)
+router.get("/:oid",protect.forAuthuser,orderController.getOrder)
 
 router.post("/create",protect.forAuthuser,orderController.createOrder)
 
