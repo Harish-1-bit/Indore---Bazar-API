@@ -14,8 +14,8 @@ const reviewSchema = mongoose.Schema({
     rating:{
         type:Number,
         required:true,
-        min:[1,"quantitiy can not be less then 1 5"],
-        max:[1,"quantitiy can not be  more then 5"],
+        min:[1,"quantitiy can not be less then 1"],
+        max:[5,"quantitiy can not be  more then 5"],
         default:1
     },
     text:{
