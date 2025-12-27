@@ -1,6 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { loginUser } from '../features/auth/AuthSlice'
 
 const Login = () => {
+      const {user,isLoading, isSuccess, isError, message} = useSelector(state=>state.auth)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const [formData, setformData]=useState({email:'',password:''})
+    const {email,password}=formData
+
+    const handleChange = (e)=>{
+        setformData({
+            ...formData,
+            [e.target.name]:e.target.value
+        })
+    }
+    
+
+    const handleSubmit = (e)=>{
+        e.preventDefault()
+        dispatch(loginUser(formData))
+    }
+
+    useEffect(()=>{
+
+        if(user){
+            navigate('/')
+        }
+
+        if(isError && message){
+            toast.error(message,{position:'top-left'})
+        }
+    },[user,message,isError])
   return (
  <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
@@ -12,12 +46,15 @@ const Login = () => {
           <p className="text-gray-600">Sign in to continue shopping</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Email Address
             </label>
             <input
+            value={email}
+            name='email'
+            onChange={handleChange}
               type="email"
               placeholder="Enter your email"
               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none"
@@ -29,6 +66,9 @@ const Login = () => {
               Password
             </label>
             <input
+            value={password}
+            name='password'
+            onChange={handleChange}
               type="password"
               placeholder="Enter your password"
               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none"
@@ -48,7 +88,7 @@ const Login = () => {
             </a>
           </div>
 
-          <button className="w-full bg-emerald-500 text-white py-3 rounded-xl font-semibold hover:bg-emerald-600 transition-colors shadow-lg hover:shadow-xl">
+          <button type='submit' className="w-full bg-emerald-500 text-white py-3 rounded-xl font-semibold hover:bg-emerald-600 transition-colors shadow-lg hover:shadow-xl">
             Sign In
           </button>
 
@@ -87,7 +127,7 @@ const Login = () => {
               </a>
             </p>
           </div>
-        </div>
+        </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
           By signing in, you agree to our{' '}

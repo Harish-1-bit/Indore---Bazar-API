@@ -40,6 +40,9 @@ const registerUse = async (req, res) => {
     email: user.email,
     phone: user.phone,
     address: user.address,
+    isAdmin:user.isAdmin,
+    isShopOwner:user.isShopowner,
+    isActive:user.isActive,
     token: genrateToken(user._id),
   });
 
@@ -58,12 +61,15 @@ const loginuser = async (req, res) => {
 
   if (user && (await bcrypt.compare(password, user.password))) {
     res.status(200).json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      address: user.address,
-      token: genrateToken(user._id),
+    _id: user.id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    address: user.address,
+    isAdmin:user.isAdmin,
+    isShopOwner:user.isShopowner,
+    isActive:user.isActive,
+    token: genrateToken(user._id),
     });
   } else {
     res.status(400);
