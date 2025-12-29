@@ -17,7 +17,7 @@ const getAlluser = async (req, res) => {
 };
 
 const getAllshops = async (req,res)=>{
-  const shops = await Shop.find()
+  const shops = await Shop.find().populate('user')
   if(!shops){
     res.status(404)
     throw new Error("No Shops Found")
@@ -37,13 +37,8 @@ const getAllorder = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  if(!req.body.isActive){
-    res.status(409)
-    throw new Error("Pleae send the status of the User")
-  }
   
-  const newUser = await User.findByIdAndUpdate(req.params.uid,{isActive:req.body.isActive},{new:true})
-  console.log(newUser)
+  const newUser = await User.findByIdAndUpdate(req.params.uid,{isActive:req.body.isActive?true:false},{new:true})
   if(!newUser){
     res.status(409)
     throw new Error("User not Updated")
@@ -54,18 +49,16 @@ const updateUser = async (req, res) => {
 
 
 const updateShop = async (req, res) => {
-  console.log(req.body.status)
   if(!req.body){
     res.status(409)
     throw new Error("Please send the status")
   }
   const shopId = req.params.sid
-  const updateShop = await Shop.findByIdAndUpdate(shopId,{status:req.body.status},{new:true})
+  const updateShop = await Shop.findByIdAndUpdate(shopId,{status:req.body.status},{new:true}).populate('user')
   if(!updateShop){
     res.status(409)
     throw new Error("Request for shop creation is denied")
   }
-  console.log(updateShop)
   res.status(201).json(updateShop)
 };
 

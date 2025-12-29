@@ -8,6 +8,8 @@ import {
   getAllShops,
   getAllUsers,
 } from "../../features/admin/AdminSlice";
+import ShopApporoval from "../../components/admin/ShopApporoval";
+import { toast } from "react-toastify";
 
 const AdminDashboard = () => {
   const { user } = useSelector((state) => state.auth);
@@ -21,6 +23,8 @@ const AdminDashboard = () => {
     allShops,
   } = useSelector((state) => state.admin);
 
+
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,7 +36,11 @@ const AdminDashboard = () => {
     if (!user.isAdmin || !user) {
       navigate("/login");
     }
-  }, [user]);
+
+    if(adminErrorMessage && adminError){
+      toast.error(adminErrorMessage,{position:'top-left'})
+    }
+  }, [user,adminErrorMessage,adminError]);
 
   if (adminLoading) {
     return (
@@ -63,9 +71,6 @@ const AdminDashboard = () => {
                   <p className="text-3xl font-bold text-gray-900 mt-2">
                     {allUsers?.length}
                   </p>
-                  <p className="text-xs text-green-600 mt-3">
-                    +5.2% from last month
-                  </p>
                 </div>
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                   <svg
@@ -93,9 +98,6 @@ const AdminDashboard = () => {
                   </p>
                   <p className="text-3xl font-bold text-gray-900 mt-2">
                     {allShops?.length}
-                  </p>
-                  <p className="text-xs text-green-600 mt-3">
-                    +12.1% from last month
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -125,9 +127,7 @@ const AdminDashboard = () => {
                   <p className="text-3xl font-bold text-gray-900 mt-2">
                     {allOrders?.length}
                   </p>
-                  <p className="text-xs text-green-600 mt-3">
-                    +8.3% from last month
-                  </p>
+
                 </div>
                 <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                   <svg
@@ -150,40 +150,29 @@ const AdminDashboard = () => {
             <div className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-600 text-sm font-medium">Revenue</p>
+                  <p className="text-gray-600 text-sm font-medium">Approvals</p>
                   <p className="text-3xl font-bold text-gray-900 mt-2">
-                    $542.3K
-                  </p>
-                  <p className="text-xs text-green-600 mt-3">
-                    +15.6% from last month
+                    {allShops.filter(shop=>shop.status!=='accepted').length}
                   </p>
                 </div>
                 <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <svg
-                    className="w-6 h-6 text-purple-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                  <svg className="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="lg:col-span-1 bg-white rounded-xl border border-gray-200 p-6">
               <h2 className="text-lg font-bold text-gray-900 mb-4">
-                Recent Activity
+                Recent Order
               </h2>
               <div className="space-y-4">
                 {
+                    allOrders.length===0?
+                    (<p>No Recent Orders</p>):
                     allOrders.map((order)=>{
                         return (
                         <div key={order?._id} className="flex items-center justify-between pb-4 border-b border-slate-100">
@@ -206,85 +195,9 @@ const AdminDashboard = () => {
                         )
                     })
                 }                
-                
-                
-
-
-
-
               </div>
             </div>
-
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">
-                Platform Stats
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-medium text-gray-700">
-                      User Growth
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900">78%</p>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-blue-600 h-2 rounded-full"
-                      style={{ width: "78%" }}
-                    ></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-medium text-gray-700">
-                      Shop Growth
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900">92%</p>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-green-600 h-2 rounded-full"
-                      style={{ width: "92%" }}
-                    ></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-medium text-gray-700">
-                      Order Fulfillment
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900">95%</p>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-orange-600 h-2 rounded-full"
-                      style={{ width: "95%" }}
-                    ></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-medium text-gray-700">
-                      Customer Satisfaction
-                    </p>
-                    <p className="text-sm font-semibold text-gray-900">88%</p>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-purple-600 h-2 rounded-full"
-                      style={{ width: "88%" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-
-              <button className="w-full mt-6 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
-                View Detailed Report
-              </button>
-            </div>
+                <ShopApporoval allShops={allShops}/>
           </div>
         </div>
       </div>

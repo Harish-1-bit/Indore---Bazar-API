@@ -6,6 +6,10 @@ import Register from './pages/Register'
 import { ToastContainer, toast } from 'react-toastify';
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Home from './pages/Home'
+import AdminAllUsers from './pages/admin/AdminAllUsers'
+import AdminAllShop from './pages/admin/AdminAllShop'
+import AdminAllordes from './pages/admin/AdminAllordes'
+import PrivateComponents from './components/PrivateComponents'
 
 const App = () => {
   return (
@@ -16,7 +20,12 @@ const App = () => {
   <Route path='/' element={<Home />} />
   <Route path='/login' element={<Login />} />
   <Route path='/register' element={<Register />} />
-  <Route path='/admin/dashboard' element={<AdminDashboard />} />
+    <Route path='/admin' element={<PrivateComponents/>}>
+        <Route path='dashboard' element={<AdminDashboard />} />
+  <Route path='user' element={<AdminAllUsers />} />
+  <Route path='shop' element={<AdminAllShop />} />
+  <Route path='order' element={<AdminAllordes />} />
+    </Route>
 </Routes>
 <ToastContainer/>
 </BrowserRouter>

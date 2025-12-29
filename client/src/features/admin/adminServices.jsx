@@ -21,7 +21,6 @@ const getAllShops = async(token)=>{
         }
     }
     const respone = await axios.get(`${API_URL}/shop`,option)
-    console.log(respone.data)
     return respone.data
 }
 const getAllOrders = async(token)=>{
@@ -32,10 +31,32 @@ const getAllOrders = async(token)=>{
         }
     }
     const respone = await axios.get(`${API_URL}/order`,option)
-    console.log(respone.data)
     return respone.data
 }
 
-const adminService = {getAllUsers,getAllShops,getAllOrders}
+const updateShop = async(shopDetails,token)=>{
+    let option={
+        headers:{
+            authorization:`Bearer ${token}`
+        }
+    }
+    const response = await axios.put(`${API_URL}/shop/${shopDetails.shopId}`,shopDetails,option)
+    console.log("object")
+ return response.data
+}
+
+const UpdateUser = async(userDetails,token)=>{
+    let option={
+        headers:{
+            authorization:`Bearer ${token}`
+        }
+    }
+    console.log(userDetails)
+    const response = await axios.put(`${API_URL}/user/${userDetails.userId}`,userDetails,option)
+ console.log(response.data)
+ return response.data
+}
+
+const adminService = {getAllUsers,getAllShops,getAllOrders,updateShop,UpdateUser}
 
 export default adminService

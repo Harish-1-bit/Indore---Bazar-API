@@ -67,6 +67,44 @@ const AdminSlice = createSlice({
     state.adminError=true,
     state.adminErrorMessage=action.payload
     })
+    .addCase(updateShop.pending,(state,action)=>{
+    state.adminLoading=true,
+    state.adminSuccess=false,
+    state.adminError=false
+    })
+    .addCase(updateShop.fulfilled,(state,action)=>{
+    state.adminLoading=false,
+    state.adminSuccess=true,
+    state.allShops=state.allShops.map((shop)=>{
+       return shop._id===action.payload._id? action.payload:shop
+    })
+    state.adminError=false
+    })
+    .addCase(updateShop.rejected,(state,action)=>{
+    state.adminLoading=false,
+    state.adminSuccess=false,
+    state.adminError=true,
+    state.adminErrorMessage=action.payload
+    })
+    .addCase(UpdateUser.pending,(state,action)=>{
+    state.adminLoading=true,
+    state.adminSuccess=false,
+    state.adminError=false
+    })
+    .addCase(UpdateUser.fulfilled,(state,action)=>{
+    state.adminLoading=false,
+    state.adminSuccess=true,
+    state.allUsers=state.allUsers.map((user)=>{
+       return user._id===action.payload._id? action.payload : user
+    })
+    state.adminError=false
+    })
+    .addCase(UpdateUser.rejected,(state,action)=>{
+    state.adminLoading=false,
+    state.adminSuccess=false,
+    state.adminError=true,
+    state.adminErrorMessage=action.payload
+    })
   }
 });
 
@@ -104,6 +142,30 @@ export const getAllOrders = createAsyncThunk('FETCH/ADMIN/ORDER',async(_,thunkAP
 
 try {
     return await adminService.getAllOrders(token)
+} catch (error) {
+    let message = error.respone.data.message
+    return thunkAPI.rejectWithValue(message)
+}
+})
+
+export const updateShop = createAsyncThunk('UPDATE/ADMIN/SHOP',async(shopDetails ,thunkAPI)=>{
+
+    let token = thunkAPI.getState().auth.user.token
+    
+    try {
+        return await adminService.updateShop(shopDetails,token)
+} catch (error) {
+    let message = error.respone.data.message
+    return thunkAPI.rejectWithValue(message)
+}
+})
+
+export const UpdateUser = createAsyncThunk('UPDATE/ADMIN/USER',async(userDetails ,thunkAPI)=>{
+
+    let token = thunkAPI.getState().auth.user.token
+    
+    try {
+        return await adminService.UpdateUser(userDetails,token)
 } catch (error) {
     let message = error.respone.data.message
     return thunkAPI.rejectWithValue(message)
