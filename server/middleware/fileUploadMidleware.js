@@ -2,14 +2,12 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
     destination:(req,file,cb)=>{
-        cb(null,'uploads/')
+        cb(null,"uploads/")
     },
     filename:(req,file,cb)=>{
-        const extention = file.originalname.split(".")[1]
-        cb(null,crypto.randomUUID() + "." + extention)
+        cb(null, `product-${crypto.randomUUID()}.${file.originalname.split(".")[1]}`)
     }
 })
-
 const upload = multer({storage:storage})
 
 export default upload

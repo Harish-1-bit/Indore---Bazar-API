@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { registerUser } from '../features/auth/AuthSlice';
 
@@ -173,9 +173,9 @@ const Register = () => {
           <div className="text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
-              <a className="font-semibold text-emerald-600 hover:text-emerald-700 transition-colors cursor-pointer">
+              <Link to={'/login'} className="font-semibold text-emerald-600 hover:text-emerald-700 transition-colors cursor-pointer">
                 Sign in
-              </a>
+              </Link>
             </p>
           </div>
         </form>

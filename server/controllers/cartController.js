@@ -120,7 +120,6 @@ const updateCart = async(req,res)=>{
 }
 const removeCart = async(req,res)=>{
     const {productId} = req.params
-    console.log(productId)
     const userId=req.user._id
     const cart = await Cart.findOne({user:userId})
     if(!cart){

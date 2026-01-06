@@ -11,6 +11,16 @@ const login = async(formData)=>{
     return respone.data
 }
 
-const authServices = {register,login}
+const getUsersOrder = async(token)=>{
+    let option={
+        headers:{
+            authorization:`Bearer ${token}`
+        }
+    }
+    const respone = await axios.get('/api/orders',option)
+    return respone.data
+}
+
+const authServices = {register,login,getUsersOrder}
 
 export default authServices

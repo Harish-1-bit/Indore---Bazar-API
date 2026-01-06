@@ -122,7 +122,6 @@ products : ${allStock}
         message:response.text
     })
     } catch (error) {
-        console.log(error);
         
         res.status(409)
         throw new Error("something went wrong")

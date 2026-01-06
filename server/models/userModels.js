@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema(
     },
     isShopowner: {
       type: Boolean,
-      default: true,
+      default: false,
       required: true,
     },
     isActive: {

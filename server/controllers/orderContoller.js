@@ -14,7 +14,6 @@ const getOrders = async (req,res) => {
 }
 
 const getOrder = async (req,res) => {
-    console.log(req.params.oid)
     const order = await Order.findById(req.params.oid).populate("user").populate("shop").populate("coupon").populate("shop")
     
     if(!order){
@@ -51,7 +50,7 @@ const createOrder = async (req,res) => {
     const totalBill = cart.products.reduce((acc, item)=>{
         return acc + item.product.price * item.qty
     },0)
-    const discount = couponExist? totalBill * couponExist.couponDiscount/1000 :0
+    const discount = couponExist? totalBill * couponExist.couponDiscount/100 :0
     let shopId=cart.products[0].product.shop._id
     const order = new Order({
         user:userId,
@@ -75,7 +74,6 @@ const createOrder = async (req,res) => {
 
 const cancelOrder = async (req,res) => {
     const order = await Order.findById(req.params.oid)
-    console.log(order)
     if(order.status === "placed"){
         const cancelledorder= await Order.findByIdAndUpdate(req.params.oid,{status:"cancelled"},{new:true})
         res.status(200).json(cancelledorder)

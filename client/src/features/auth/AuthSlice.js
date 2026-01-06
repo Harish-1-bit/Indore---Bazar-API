@@ -8,7 +8,9 @@ const initialState = {
     isLoading:false,
     isSuccess:false,
     isError:false,
-    message:""
+    message:"",
+    order:[]
+    
 }
 
 const AuthSlice = createSlice({
@@ -57,6 +59,23 @@ const AuthSlice = createSlice({
       state.isError=false,
       state.user=null
     })
+    .addCase(getUsersOrder.fulfilled,(state,action)=>{
+      state.isLoading=false,
+      state.isSuccess=true,
+      state.order=action.payload,
+      state.isError=false
+    })
+    .addCase(getUsersOrder.rejected,(state,action)=>{
+      state.isLoading=false,
+      state.isSuccess=false,
+      state.isError=true,
+      state.message=action.payload
+    })
+    .addCase(getUsersOrder.pending,(state,action)=>{
+      state.isLoading=true,
+      state.isSuccess=false,
+      state.isError=false
+    })
   }
 });
 
@@ -84,6 +103,18 @@ export const loginUser = createAsyncThunk("AUTH/LOGIN", async(formData,thunkAPI)
   }
 })
 
+// User's order
+export const getUsersOrder = createAsyncThunk("AUTH/USER/ORDERS", async(_,thunkAPI)=>{
+  let token = JSON.parse(localStorage.getItem('user')).token
+  try {
+    return await authServices.getUsersOrder(token)
+  } catch (error) {
+   let message = error.response.data.message
+   return thunkAPI.rejectWithValue(message)
+  }
+})
+
 export const logoutUser = createAsyncThunk('AUTH/LOGOUT',async()=>{
   localStorage.removeItem('user')
+  localStorage.removeItem('shop')
 })

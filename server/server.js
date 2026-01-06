@@ -11,6 +11,9 @@ import orderroutes from "./routes/orderroutes.js";
 import shoproutes from "./routes/shoproutes.js";
 import couponRoutes from "./routes/couponRoutes.js";
 import chatBotRoutes from "./routes/chatBotRoutes.js";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const app = express();
 

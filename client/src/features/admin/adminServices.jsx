@@ -41,7 +41,6 @@ const updateShop = async(shopDetails,token)=>{
         }
     }
     const response = await axios.put(`${API_URL}/shop/${shopDetails.shopId}`,shopDetails,option)
-    console.log("object")
  return response.data
 }
 

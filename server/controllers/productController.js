@@ -12,7 +12,6 @@ const getAllproducts = async (req, res) => {
 const getSingleproduct = async (req, res) => {
   const pId = req.params.pid;
   const singleProduct = await Product.findById(pId).populate("shop");
-  console.log(singleProduct);
   if (!singleProduct) {
     res.status(404);
     throw new Error("Products Not Found");

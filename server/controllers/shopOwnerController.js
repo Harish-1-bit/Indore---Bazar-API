@@ -5,10 +5,20 @@ import Order from "../models/orderModels.js"
 import Product from "../models/productsModels.js"
 import Shop from "../models/shopModels.js"
 
+const getShop = async(req,res)=>{
+    const userId = req.user._id
+    const shop = await Shop.findOne({user:userId}).populate('user')
+    if(!shop){
+        res.status(404)
+        throw new Error('Shop not found!')
+    }
+
+    res.status(201).json(shop)
+}
+
 const addShop = async (req,res) => {
     const {name, description, address, shopPhone}= req.body
     const user = req.user.id
-    console.log(req.user)
 
     if(!name || !description || !address || !shopPhone){
         res.status(409)
@@ -27,11 +37,23 @@ const addShop = async (req,res) => {
 }
 
 const updateShop = async (req,res) => {
-    res.send("Shop is updated")
+    let shopId = req.params.sid
+    if(req.body.status)
+{    req.body.status='pending'}
+
+    const updatedShop = await Shop.findByIdAndUpdate(shopId,req.body,{new:true})
+
+    if(!updatedShop){
+        res.status(404)
+        throw new Error('Shop not found!')
+    }
+
+    res.status(201).json(updatedShop)
 }
 
 const addProduct = async (req,res) => {
     const {name, description, price, stock, category, shopId} = req.body
+    console.log(req.body)
 
     if(!name || !description || !price || !stock || !category || !shopId){
         res.status(409)
@@ -68,14 +90,14 @@ const updateProduct = async (req,res) => {
 }
 
 const createCoupon = async (req,res)=>{
-    const {userId} = req.user._id
+    const userId = req.user._id
   const {couponCode, couponDiscount} = req.body
 
   if(!couponCode || !couponDiscount){
     res.status(409)
     throw new Error("Coupon Could not be created")
   }
-  const shop = await Shop.findOne({userId})
+  const shop = await Shop.findOne({user:userId})
 
   const coupon = new Coupon({
     couponCode:couponCode.toUpperCase(),
@@ -88,6 +110,17 @@ await coupon.populate("shop")
   res.status(200).json(coupon)
 }
 
+const updateCoupon = async(req,res)=>{
+    const updatedCoupon = await Coupon.findByIdAndUpdate(req.params.cid,req.body,{new:true}).populate('shop')
+    if(!updateCoupon){
+        res.status(409)
+        throw new Error("Coupon could not be updated")
+    }
+
+    res.status(200)
+    .json(updatedCoupon)
+}
+
 const getMyShoporder= async (req,res)=>{
 
     const userId = req.user._id
@@ -96,7 +129,7 @@ const getMyShoporder= async (req,res)=>{
         res.status(404)
         throw new Error("Shop not found")
     }
-    const order =await Order.find({shop:shop._id}).populate("user").populate("cart").populate("shop").populate("coupon")
+    const order =await Order.find({shop:shop._id}).populate("user").populate("products.product").populate("shop").populate("coupon")
 
     res.status(200)
     .json(order)
@@ -130,6 +163,6 @@ const updateOrder = async (req,res) => {
     res.status(200).json(updatedOrder)
 }
 
-const shopOwnerController = {addProduct,addShop,updateOrder,updateProduct,updateShop,createCoupon,getMyShoporder}
+const shopOwnerController = {addProduct,addShop,updateOrder,updateProduct,updateShop,createCoupon,getMyShoporder,getShop,updateCoupon}
 
 export default shopOwnerController

@@ -5,7 +5,9 @@ import upload from "../middleware/fileUploadMidleware.js";
 
 const router = express.Router()
 
-router.post("/add-product",protect.forAuthuser,upload.single("productImage"),shopOwnerController.addProduct)
+router.get("/",protect.forAuthuser,shopOwnerController.getShop)
+
+router.post("/add-product",protect.forAuthuser,upload.single('productImage'),shopOwnerController.addProduct)
 
 router.put("/product/:pid",protect.forAuthuser,shopOwnerController.updateProduct)
 
@@ -18,5 +20,7 @@ router.post("/create-shop",protect.forAuthuser,shopOwnerController.addShop)
 router.put("/shop/:sid",protect.forAuthuser,shopOwnerController.updateShop)
 
 router.post("/coupon",protect.forAuthuser,shopOwnerController.createCoupon)
+
+router.put("/coupon/:cid",protect.forAuthuser,shopOwnerController.updateCoupon)
 
 export default router

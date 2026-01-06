@@ -35,7 +35,7 @@ const AdminAllUsers = () => {
     }
 
     if(adminErrorMessage && adminError){
-      toast.error(adminErrorMessage,{position:'top-left'})
+      Toast.error(adminErrorMessage,{position:'top-left'})
     }
   }, [user,adminErrorMessage,adminError]);
 
