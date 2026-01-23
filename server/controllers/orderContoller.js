@@ -4,7 +4,7 @@ import Order from "../models/orderModels.js"
 
 const getOrders = async (req,res) => {
     const userId=req.user._id
-    const order = await Order.find({user:userId}).populate("user").populate("shop").populate("coupon").populate("shop")
+    const order = await Order.find({user:userId}).populate("products.product").populate("shop").populate("coupon").populate("shop").populate("user")
 
     if(!order){
         res.status(404)
@@ -74,8 +74,9 @@ const createOrder = async (req,res) => {
 
 const cancelOrder = async (req,res) => {
     const order = await Order.findById(req.params.oid)
+    console.log(order)
     if(order.status === "placed"){
-        const cancelledorder= await Order.findByIdAndUpdate(req.params.oid,{status:"cancelled"},{new:true})
+        const cancelledorder= await Order.findByIdAndUpdate(req.params.oid,{status:"cancelled"},{new:true}).populate("products.product").populate("shop").populate("coupon").populate("shop").populate("user")
         res.status(200).json(cancelledorder)
     }else{
         res.status(409)

@@ -6,15 +6,15 @@ function ShopOwnerLayout({ children, activePage = 'Dashboard' }) {
     const {user}=useSelector(state=>state.auth)
     const {shop}=useSelector(state=>state.shop)
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 z-10">
       <div className="flex">
-        <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-slate-900 text-white">
+        <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-slate-900 text-white z-10">
           <Link to={'/'} className="flex items-center h-16 px-6 border-b border-slate-800">
             <Store className="w-8 h-8 text-emerald-500" />
             <span className="ml-3 text-xl font-bold">Indore Bazar</span>
           </Link>
 
-          <nav className="flex-1 px-4 py-6 space-y-2">
+          <nav className="flex-1 px-4 py-6 space-y-2 z-10">
             <Link to={'/shop/dashboard'} className={`flex items-center px-4 py-3 rounded-lg transition ${activePage === 'Dashboard' ? 'bg-emerald-500 text-white' : 'text-slate-300 hover:bg-slate-800'}`}>
               <Home className="w-5 h-5" />
               <span className="ml-3">Dashboard</span>

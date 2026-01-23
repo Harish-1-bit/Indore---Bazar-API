@@ -10,9 +10,9 @@ const AdminSlidebar = () => {
     const location=useLocation()
 
   return (
-     <aside className="w-64 bg-slate-900 shrink-0 hidden md:block">
+     <aside className="w-64 bg-slate-900 shrink-0 hidden md:block z-10">
       <div className="p-6 border-b border-gray-800">
-        <div className="flex items-center space-x-3">
+        <Link to={'/'} className="flex items-center space-x-3">
           <div className=" text-white w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-lg">
             A
           </div>
@@ -20,7 +20,7 @@ const AdminSlidebar = () => {
             <p className=" text-white font-bold text-lg">Indore Bazar</p>
             <p className="text-xs text-gray-400">Admin Panel</p>
           </div>
-        </div>
+        </Link>
       </div>
 
       <nav className="p-4 space-y-2">

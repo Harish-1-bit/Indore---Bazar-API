@@ -1,6 +1,24 @@
 import React from 'react'
+import { useEffect } from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import { getAllProduct, getAllShops } from '../features/auth/AuthSlice'
+import { toast } from 'react-toastify'
+import LoadingScreen from '../components/LoadingScreen'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
+  const {products, shops,message,isError,isLoading,isSuccess}=useSelector(state=>state.auth)
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(getAllProduct())
+    dispatch(getAllShops())
+    if(isError && message){
+      toast.error(message,{position:'top-left'})
+    }
+  },[isError,message])
+  if(isLoading){
+    return <LoadingScreen/>
+  }
   return (
     <div className="min-h-screen bg-gray-50">
         
@@ -145,100 +163,34 @@ const Home = () => {
             <button className="text-emerald-600 font-semibold hover:text-emerald-700">See All</button>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow cursor-pointer">
+            {
+              products.map((product,index)=>{
+                if(index<5){
+                  return(
+                    <Link to={`/products/${product._id}`} className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow cursor-pointer">
               <div className="relative">
-                <img src="https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Product" className="w-full h-48 object-cover" />
+                <img src={`${product.productImage}`} alt="Product" className="w-full h-48 object-cover" />
                 <span className="absolute top-2 right-2 bg-emerald-500 text-white text-xs font-semibold px-2 py-1 rounded-full">15% OFF</span>
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">Fresh Apples</h3>
-                <p className="text-sm text-gray-500 mb-2">1 kg</p>
+                <h3 className="font-semibold text-gray-900 mb-1">{product?.name}</h3>
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-lg font-bold text-gray-900">$4.99</span>
-                    <span className="text-sm text-gray-400 line-through ml-2">$5.99</span>
+                    <span className="text-lg font-bold text-gray-900">₹{product?.price}</span>
                   </div>
                   <button className="bg-emerald-500 text-white p-2 rounded-lg hover:bg-emerald-600">
                     <span className="text-xl">+</span>
                   </button>
                 </div>
               </div>
-            </div>
+            </Link>
+                  )
+                }else{
+                  return
+                }
+              })
+            }
 
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow cursor-pointer">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Product" className="w-full h-48 object-cover" />
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">Organic Tomatoes</h3>
-                <p className="text-sm text-gray-500 mb-2">500 g</p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-lg font-bold text-gray-900">$2.49</span>
-                  </div>
-                  <button className="bg-emerald-500 text-white p-2 rounded-lg hover:bg-emerald-600">
-                    <span className="text-xl">+</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow cursor-pointer">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/1537169/pexels-photo-1537169.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Product" className="w-full h-48 object-cover" />
-                <span className="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">NEW</span>
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">Fresh Milk</h3>
-                <p className="text-sm text-gray-500 mb-2">1 L</p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-lg font-bold text-gray-900">$3.99</span>
-                  </div>
-                  <button className="bg-emerald-500 text-white p-2 rounded-lg hover:bg-emerald-600">
-                    <span className="text-xl">+</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow cursor-pointer">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Product" className="w-full h-48 object-cover" />
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">Whole Wheat Bread</h3>
-                <p className="text-sm text-gray-500 mb-2">400 g</p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-lg font-bold text-gray-900">$2.99</span>
-                  </div>
-                  <button className="bg-emerald-500 text-white p-2 rounded-lg hover:bg-emerald-600">
-                    <span className="text-xl">+</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow cursor-pointer">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Product" className="w-full h-48 object-cover" />
-                <span className="absolute top-2 right-2 bg-emerald-500 text-white text-xs font-semibold px-2 py-1 rounded-full">20% OFF</span>
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-1">Bananas</h3>
-                <p className="text-sm text-gray-500 mb-2">6 pcs</p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-lg font-bold text-gray-900">$1.99</span>
-                    <span className="text-sm text-gray-400 line-through ml-2">$2.49</span>
-                  </div>
-                  <button className="bg-emerald-500 text-white p-2 rounded-lg hover:bg-emerald-600">
-                    <span className="text-xl">+</span>
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -253,17 +205,17 @@ const Home = () => {
             <button className="text-emerald-600 font-semibold hover:text-emerald-700">View All Shops</button>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer border border-gray-100">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shop" className="w-full h-48 object-cover" />
-                <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full flex items-center space-x-1">
-                  <span className="text-yellow-500 text-sm">★</span>
-                  <span className="font-semibold text-sm">4.8</span>
-                </div>
-              </div>
+            {
+              shops.map((shop,index)=>{
+                if(index<5){
+                  return(
+                    <div key={shop._id} className="bg-white h-auto w-auto rounded-xl overflow-hidden shadow-md hover:shadow-xl flex transition-shadow cursor-pointer border border-gray-100 flex-row items-center px-6">
+                      <div className='p-3 rounded-lg bg-[#009866] text-white'>
+                        {shop.name[0]}
+                      </div>
               <div className="p-5">
-                <h3 className="font-bold text-xl text-gray-900 mb-2">Fresh Market</h3>
-                <p className="text-gray-600 text-sm mb-3">Organic vegetables, fruits & dairy products</p>
+                <h3 className="font-bold text-xl text-gray-900 mb-2">{shop.name}</h3>
+                <p className="text-gray-600 text-sm mb-3">{shop.description}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4 text-sm text-gray-500">
                     <span>🕐 15-20 min</span>
@@ -272,165 +224,15 @@ const Home = () => {
                 </div>
               </div>
             </div>
-
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer border border-gray-100">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/1309240/pexels-photo-1309240.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shop" className="w-full h-48 object-cover" />
-                <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full flex items-center space-x-1">
-                  <span className="text-yellow-500 text-sm">★</span>
-                  <span className="font-semibold text-sm">4.6</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-xl text-gray-900 mb-2">Daily Bakery</h3>
-                <p className="text-gray-600 text-sm mb-3">Fresh bread, pastries & cakes daily</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span>🕐 10-15 min</span>
-                    <span>📍 1.8 km</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer border border-gray-100">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shop" className="w-full h-48 object-cover" />
-                <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full flex items-center space-x-1">
-                  <span className="text-yellow-500 text-sm">★</span>
-                  <span className="font-semibold text-sm">4.9</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-xl text-gray-900 mb-2">Green Grocery</h3>
-                <p className="text-gray-600 text-sm mb-3">Farm fresh fruits and vegetables</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span>🕐 20-25 min</span>
-                    <span>📍 3.2 km</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer border border-gray-100">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/1537169/pexels-photo-1537169.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shop" className="w-full h-48 object-cover" />
-                <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full flex items-center space-x-1">
-                  <span className="text-yellow-500 text-sm">★</span>
-                  <span className="font-semibold text-sm">4.7</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-xl text-gray-900 mb-2">Dairy Delight</h3>
-                <p className="text-gray-600 text-sm mb-3">Fresh milk, cheese & dairy essentials</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span>🕐 15-20 min</span>
-                    <span>📍 2.1 km</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer border border-gray-100">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shop" className="w-full h-48 object-cover" />
-                <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full flex items-center space-x-1">
-                  <span className="text-yellow-500 text-sm">★</span>
-                  <span className="font-semibold text-sm">4.5</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-xl text-gray-900 mb-2">Snack Corner</h3>
-                <p className="text-gray-600 text-sm mb-3">Wide variety of snacks & beverages</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span>🕐 10-15 min</span>
-                    <span>📍 1.5 km</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow cursor-pointer border border-gray-100">
-              <div className="relative">
-                <img src="https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shop" className="w-full h-48 object-cover" />
-                <div className="absolute top-3 right-3 bg-white px-3 py-1 rounded-full flex items-center space-x-1">
-                  <span className="text-yellow-500 text-sm">★</span>
-                  <span className="font-semibold text-sm">4.8</span>
-                </div>
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-xl text-gray-900 mb-2">Meat & More</h3>
-                <p className="text-gray-600 text-sm mb-3">Premium quality meat & poultry</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span>🕐 25-30 min</span>
-                    <span>📍 3.8 km</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+                  )
+                }
+              })
+            }
           </div>
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">SM</span>
-                </div>
-                <span className="text-2xl font-bold">ShopMart</span>
-              </div>
-              <p className="text-gray-400">Your trusted partner for fresh groceries from local shops.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-4">Company</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a className="hover:text-white transition-colors">About Us</a></li>
-                <li><a className="hover:text-white transition-colors">Careers</a></li>
-                <li><a className="hover:text-white transition-colors">Blog</a></li>
-                <li><a className="hover:text-white transition-colors">Press</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><a className="hover:text-white transition-colors">Terms of Service</a></li>
-                <li><a className="hover:text-white transition-colors">Privacy Policy</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-4">Download App</h4>
-              <div className="space-y-3">
-                <div className="bg-gray-800 rounded-lg p-3 flex items-center space-x-3 cursor-pointer hover:bg-gray-700 transition-colors">
-                  <span className="text-2xl">📱</span>
-                  <div>
-                    <p className="text-xs text-gray-400">Download on the</p>
-                    <p className="font-semibold">App Store</p>
-                  </div>
-                </div>
-                <div className="bg-gray-800 rounded-lg p-3 flex items-center space-x-3 cursor-pointer hover:bg-gray-700 transition-colors">
-                  <span className="text-2xl">🤖</span>
-                  <div>
-                    <p className="text-xs text-gray-400">Get it on</p>
-                    <p className="font-semibold">Google Play</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>© 2024 ShopMart. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      
     </div>
   )
 }

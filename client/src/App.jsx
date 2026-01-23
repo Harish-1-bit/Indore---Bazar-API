@@ -17,6 +17,12 @@ import ShopOwnerCoupon from './pages/shop/ShopOwnerCoupon'
 import ShopOwnerProfileCard from './pages/shop/ShopOwnerProfileCard'
 import { Loader } from 'lucide-react'
 import ProfilePage from './pages/ProfilePage'
+import AllProducts from './pages/AllProducts'
+import ProductDetail from './pages/ProductDetail'
+import AllShops from './pages/AllShops'
+import ShopDetails from './pages/ShopDetails'
+import Cart from './pages/Cart'
+import Footer from './components/Footer'
 
 
 const App = () => {
@@ -28,6 +34,10 @@ const App = () => {
   <Route path='/' element={<Home />} />
   <Route path='/login' element={<Login />} />
   <Route path='/register' element={<Register />} />
+  <Route path='/products' element={<AllProducts/>}/>
+  <Route path='/products/:pid' element={<ProductDetail/>}/>
+  <Route path='/marketplace' element={<AllShops/>}/>
+  <Route path='/marketplace/:sid' element={<ShopDetails/>}/>
   {/* Admin Routes */}
     <Route path='/admin' element={<PrivateComponents/>}>
     <Route path='dashboard' element={<AdminDashboard />} />
@@ -41,8 +51,12 @@ const App = () => {
     <Route path='/shop/orders' element={<ShopOwnerOrders/>}/>
     <Route path='/shop/coupons' element={<ShopOwnerCoupon/>}/>
     <Route path='/shop/profile' element={<ShopOwnerProfileCard/>}/>
+    {/* Auth Routes */}
     <Route path='/auth/profile' element={<ProfilePage/>}/>
+    <Route path='/auth/cart' element={<Cart/>}/>
+    
 </Routes>
+<Footer/>
 <ToastContainer/>
 </BrowserRouter>
 </>  )

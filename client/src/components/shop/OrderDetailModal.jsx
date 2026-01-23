@@ -1,14 +1,19 @@
 import { useDispatch, useSelector } from "react-redux"
 import { orderUpdate } from "../../features/shop/ShopSlice"
 import { useEffect } from "react"
+import { cancelOrder } from "../../features/auth/AuthSlice"
 
 export default function OrderDetailsModal({ orderDetail,modalOrder,handleModalOrder  = () => {} }) {
     const {shopOrders} = useSelector(state=>state.shop)
     const dispatch = useDispatch()
-    console.log(orderDetail)
 
-    const handleOrderUpdate = (orderDetail)=>{
-      dispatch(orderUpdate(orderDetail))
+    const handleOrderUpdate = (orderDetails)=>{
+      if(orderDetail.user.isShopOwner){
+      dispatch(orderUpdate(orderDetails))
+      }else{
+        console.log(orderDetails)
+        dispatch(cancelOrder(orderDetails))
+      }
       handleModalOrder()
     }
 
@@ -104,12 +109,12 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
           <div>
             <h3 className="font-semibold text-gray-900 mb-3">Items</h3>
             <div className="space-y-3">
-              {orderDetail?.products?.map((item) => (
-                <div key={item?._id}>
+              {orderDetail.products.map((item) => (
+                <div key={item._id}>
                   <div className="bg-white border border-gray-200 rounded-lg p-4">
                     <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium text-gray-900">{item?.product?.name}</h4>
-                      <p className="text-sm font-semibold text-gray-900">₹{item?.product?.price * item?.qty}</p>
+                      <h4 className="font-medium text-gray-900">{item.product.name}</h4>
+                      <p className="text-sm font-semibold text-gray-900">₹{item.product.price * item.qty}</p>
                     </div>
                     <div className="flex justify-between text-sm text-gray-600">
                       <span>Quantity: {item.qty}</span>
@@ -156,11 +161,15 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
         <div className="border-t border-gray-200 p-6 bg-white flex gap-3 flex-col sm:flex-row">
           {orderDetail.status === "placed" && (
             <>
-              <button onClick={()=>{
+              {
+                orderDetail.user.isShopOwner?(
+                  <button onClick={()=>{
                 handleOrderUpdate({id:orderDetail._id, status:'dispatched'})
               }} className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
                 Mark as Dispatched
               </button>
+                ):(<></>)
+              }
               <button onClick={()=>{
                 handleOrderUpdate({id:orderDetail._id, status:'cancelled'})
               }} className="flex-1 border-2 border-red-600 text-red-600 hover:bg-red-50 font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
@@ -169,7 +178,9 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
             </>
           )}
           {orderDetail.status === "dispatched" && (
-            <button
+            
+              orderDetail.user.isShopOwner?(
+                <button
               onClick={()=>{
                 handleOrderUpdate({id:orderDetail._id, status:'delivered'})
               }}
@@ -177,6 +188,10 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
             >
               Mark as Delivered
             </button>
+              ):(
+                <></>
+              )
+            
           )}
           {orderDetail.status === "delivered" && (
             <button
@@ -186,7 +201,7 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
               Order Delivered
             </button>
           )}
-          {orderDetail.status === "cancelled" && (
+          {orderDetail.status === "cancelled" && orderDetail.user.isShopOwner && (
             <button
               disabled
               className="w-full bg-red-300 text-red-800 font-medium py-2 px-4 rounded-lg cursor-not-allowed opacity-60"

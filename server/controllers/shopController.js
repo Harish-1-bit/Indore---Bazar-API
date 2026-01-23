@@ -1,7 +1,7 @@
 import Shop from "../models/shopModels.js"
 
 const getAllsops = async(req,res)=>{
-    const shops = await Shop.find()
+    const shops = await Shop.find().populate('user')
     if(!shops){
         res.status(404)
         throw new Error("Shop not found")
@@ -17,7 +17,15 @@ const getAllsops = async(req,res)=>{
 }
 
 const getShop = async(req,res)=>{
-    res.send("Get shop")
+const shop = await Shop.findById(req.params.sid).populate('user')
+
+    if (!shop) {
+        res.status(404)
+        throw new Error('Shop Not Found')
+    }
+
+
+    res.status(200).json(shop)
 }
 
 const shopController = {getAllsops,getShop}

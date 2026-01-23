@@ -37,15 +37,14 @@ const Header = () => {
             <span className="text-2xl font-bold text-gray-900">Indore Bazar</span>
           </Link>
           <nav className="hidden md:flex items-center space-x-8">
-            <a className="text-gray-700 hover:text-emerald-600 transition-colors">Home</a>
-            <a className="text-gray-700 hover:text-emerald-600 transition-colors">Shops</a>
-            <a className="text-gray-700 hover:text-emerald-600 transition-colors">Categories</a>
-            <a className="text-gray-700 hover:text-emerald-600 transition-colors">About</a>
+            <Link to={'/products/'} className="text-gray-700 hover:text-emerald-600 transition-colors">Products</Link>
+            <Link to={'/marketplace/'} className="text-gray-700 hover:text-emerald-600 transition-colors">Shops</Link>
+            <Link to={'/auth/cart/'} className="text-gray-700 hover:text-emerald-600 transition-colors">Cart</Link>
           </nav>
           <div className="flex items-center space-x-4">
             {
               user?<>
-              <Link to={user?.isAdmin ?'/admin/dashboard':user?.isShopOwner ? '/shop/dashboard' : 'auth/profile'} className="text-gray-700 hover:text-emerald-600 transition-colors">Welcome, {capatlizeWord(user.name)}</Link>
+              <Link to={user?.isAdmin ?'/admin/dashboard':user?.isShopOwner ? '/shop/dashboard' : '/auth/profile'} className="text-gray-700 hover:text-emerald-600 transition-colors">Welcome, {capatlizeWord(user.name)}</Link>
             <button onClick={handleLogout} className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors">Log out</button>
               </>:
               <>

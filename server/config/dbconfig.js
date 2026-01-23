@@ -7,7 +7,7 @@ const connectDB = async () => {
       `database successfully connected ${conn.connection.name}`.bgGreen
     );
   } catch (error) {
-    console.log("database connection failed", error.message);
+    console.log("database connection failed", error);
   }
 };
 

@@ -171,3 +171,4 @@ export const UpdateUser = createAsyncThunk('UPDATE/ADMIN/USER',async(userDetails
     return thunkAPI.rejectWithValue(message)
 }
 })
+
