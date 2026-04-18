@@ -23,6 +23,8 @@ import AllShops from './pages/AllShops'
 import ShopDetails from './pages/ShopDetails'
 import Cart from './pages/Cart'
 import Footer from './components/Footer'
+import ChatPage from './pages/ChatPage'
+import ChatFab from './components/ChatButon'
 
 
 const App = () => {
@@ -38,6 +40,7 @@ const App = () => {
   <Route path='/products/:pid' element={<ProductDetail/>}/>
   <Route path='/marketplace' element={<AllShops/>}/>
   <Route path='/marketplace/:sid' element={<ShopDetails/>}/>
+  <Route path='/chat' element={<ChatPage/>}/>
   {/* Admin Routes */}
     <Route path='/admin' element={<PrivateComponents/>}>
     <Route path='dashboard' element={<AdminDashboard />} />
@@ -54,8 +57,8 @@ const App = () => {
     {/* Auth Routes */}
     <Route path='/auth/profile' element={<ProfilePage/>}/>
     <Route path='/auth/cart' element={<Cart/>}/>
-    
 </Routes>
+    <ChatFab/>
 <Footer/>
 <ToastContainer/>
 </BrowserRouter>

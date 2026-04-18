@@ -63,6 +63,8 @@ const createOrder = async (req,res) => {
     })
     await order.save()
     await order.populate("products.product")
+    await order.populate('user')
+    await order.populate('shop')
     if(!order){
         res.status(409)
         throw new Error("Order is not placed")

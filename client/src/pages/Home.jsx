@@ -33,9 +33,9 @@ const Home = () => {
               <p className="text-xl text-gray-600">
                 Discover thousands of products from your favorite local shops. Delivered fresh to your doorstep in minutes.
               </p>
-              <button className="bg-emerald-500 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-600 transition-colors shadow-lg hover:shadow-xl">
+              <Link to={'/products'} className="bg-emerald-500 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-600 transition-colors shadow-lg hover:shadow-xl">
                 Start Shopping
-              </button>
+              </Link>
               <div className="flex items-center space-x-8 pt-4">
                 <div>
                   <p className="text-3xl font-bold text-gray-900">500+</p>
@@ -160,7 +160,7 @@ const Home = () => {
               <h2 className="text-3xl font-bold text-gray-900">Trending Products</h2>
               <p className="text-gray-600 mt-2">Most popular items this week</p>
             </div>
-            <button className="text-emerald-600 font-semibold hover:text-emerald-700">See All</button>
+            <Link to={'/products'} className="text-emerald-600 font-semibold hover:text-emerald-700">See All</Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {
@@ -202,7 +202,7 @@ const Home = () => {
               <h2 className="text-3xl font-bold text-gray-900">Trending Shops</h2>
               <p className="text-gray-600 mt-2">Popular stores near you</p>
             </div>
-            <button className="text-emerald-600 font-semibold hover:text-emerald-700">View All Shops</button>
+            <Link to={'/marketplace'} className="text-emerald-600 font-semibold hover:text-emerald-700">View All Shops</Link>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {

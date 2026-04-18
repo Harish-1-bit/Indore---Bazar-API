@@ -59,6 +59,12 @@ const updateShop = async (req, res) => {
     res.status(409)
     throw new Error("Request for shop creation is denied")
   }
+
+   if (req.body.status === "accepted") {
+      await User.findByIdAndUpdate(updateShop.user._id,{isShopowner:true},{new:true})
+  }
+
+  console.log(updateShop)
   res.status(201).json(updateShop)
 };
 

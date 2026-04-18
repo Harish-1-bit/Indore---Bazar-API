@@ -115,6 +115,11 @@ const AuthSlice = createSlice({
       state.isSuccess=false,
       state.isError=false
     })
+    .addCase(getAllProduct.pending,(state,action)=>{
+      state.isLoading=true,
+      state.isSuccess=false,
+      state.isError=false
+    })
     .addCase(getAllProduct.fulfilled,(state,action)=>{
       state.isLoading=false,
       state.isSuccess=true,
@@ -126,11 +131,6 @@ const AuthSlice = createSlice({
       state.isSuccess=false,
       state.isError=true,
       state.message=action.payload
-    })
-    .addCase(getAllProduct.pending,(state,action)=>{
-      state.isLoading=true,
-      state.isSuccess=false,
-      state.isError=false
     })
     .addCase(getSingleProduct.fulfilled,(state,action)=>{
       state.isLoading=false,
@@ -233,7 +233,7 @@ export const cancelOrder = createAsyncThunk('CANCEL/ORDER/USER',async(orderDetai
     try {
         return await authServices.cancelOrder(orderDetail,token)
 } catch (error) {
-    let message = error.respone.data.message
+    let message = error.response.data.message
     return thunkAPI.rejectWithValue(message)
 }
 })
@@ -245,7 +245,7 @@ export const requestForShop = createAsyncThunk('REAQUEST/SHOP',async(shopDetails
     try {
         return await authServices.requestForShop(shopDetails,token)
 } catch (error) {
-    let message = error.respone.data.message
+    let message = error.response.data.message
     return thunkAPI.rejectWithValue(message)
 }
 })
@@ -255,7 +255,7 @@ export const getAllProduct = createAsyncThunk('FETCH/PRODUCT',async(_ ,thunkAPI)
     try {
         return await authServices.getAllProducts()
 } catch (error) {
-    let message = error.respone.data.message
+    let message = error.response.data.message
     return thunkAPI.rejectWithValue(message)
 }
 })
@@ -265,7 +265,7 @@ export const getSingleProduct = createAsyncThunk('FETCH/SINGLE/PRODUCT',async(pi
     try {
         return await authServices.getProduct(pid)
 } catch (error) {
-    let message = error.respone.data.message
+    let message = error.response.data.message
     return thunkAPI.rejectWithValue(message)
 }
 })
@@ -275,7 +275,7 @@ export const getAllShops = createAsyncThunk('FETCH/SHOPS',async(_ ,thunkAPI)=>{
     try {
         return await authServices.getAllShops()
 } catch (error) {
-    let message = error.respone.data.message
+    let message = error.response.data.message
     return thunkAPI.rejectWithValue(message)
 }
 })
@@ -285,7 +285,7 @@ export const getSingleShop = createAsyncThunk('FETCH/SINGLE/SHOP',async(sid ,thu
     try {
         return await authServices.getSingleShop(sid)
 } catch (error) {
-    let message = error.respone.data.message
+    let message = error.response.data.message
     return thunkAPI.rejectWithValue(message)
 }
 })

@@ -102,7 +102,7 @@ function ShopDashboard() {
                     <div key={order._id} className="flex items-center justify-between pb-4 border-b border-slate-100">
               <div>
                 <div className="font-medium text-slate-900">#{order._id[0]+order._id[1]}</div>
-                <div className="text-sm text-slate-500">{order.user.name}</div>
+                <div className="text-sm text-slate-500">{order?.user?.name}</div>
               </div>
               <div className="text-right">
                 <div className="font-semibold text-slate-900">₹{order.totalBill}</div>

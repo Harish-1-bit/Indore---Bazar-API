@@ -4,11 +4,11 @@ import { useEffect } from "react"
 import { cancelOrder } from "../../features/auth/AuthSlice"
 
 export default function OrderDetailsModal({ orderDetail,modalOrder,handleModalOrder  = () => {} }) {
-    const {shopOrders} = useSelector(state=>state.shop)
+    const {user}=useSelector(state=>state.auth)
+    console.log(user)
     const dispatch = useDispatch()
-
     const handleOrderUpdate = (orderDetails)=>{
-      if(orderDetail.user.isShopOwner){
+      if(orderDetail?.user?.isShopowner){
       dispatch(orderUpdate(orderDetails))
       }else{
         console.log(orderDetails)
@@ -48,7 +48,7 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
 
 
   return (
-    <div className="fixed inset-0 backdrop-blur-xs bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 backdrop-blur-xs bg-opacity-50 flex items-center justify-center p-4 z-100">
       <div className="bg-white rounded-2xl shadow-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col transform transition-all duration-300 scale-100 animate-[scaleIn_0.3s_ease-out]">
         {/* Header */}
         <div className="border-b border-gray-200 p-6 flex items-center justify-between bg-white">
@@ -162,7 +162,7 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
           {orderDetail.status === "placed" && (
             <>
               {
-                orderDetail.user.isShopOwner?(
+                user.isShopOwner?(
                   <button onClick={()=>{
                 handleOrderUpdate({id:orderDetail._id, status:'dispatched'})
               }} className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
@@ -178,8 +178,6 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
             </>
           )}
           {orderDetail.status === "dispatched" && (
-            
-              orderDetail.user.isShopOwner?(
                 <button
               onClick={()=>{
                 handleOrderUpdate({id:orderDetail._id, status:'delivered'})
@@ -188,9 +186,7 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
             >
               Mark as Delivered
             </button>
-              ):(
-                <></>
-              )
+              
             
           )}
           {orderDetail.status === "delivered" && (
@@ -201,7 +197,7 @@ const discountAmount = itemsTotal - (orderDetail?.totalBill || 0)
               Order Delivered
             </button>
           )}
-          {orderDetail.status === "cancelled" && orderDetail.user.isShopOwner && (
+          {orderDetail.status === "cancelled" && orderDetail.user.isShop0wner && (
             <button
               disabled
               className="w-full bg-red-300 text-red-800 font-medium py-2 px-4 rounded-lg cursor-not-allowed opacity-60"

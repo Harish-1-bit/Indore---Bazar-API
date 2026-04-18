@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { Link, useParams } from "react-router-dom"
 import LoadingScreen from "../components/LoadingScreen"
+import { addToCart } from "../features/Cart/CartSlice"
 
 export default function ProductDetail() {
 const {user,singleProduct,message,isError,isLoading,isSuccess}=useSelector(state=>state.auth)
@@ -19,6 +20,10 @@ const handleAddcount=()=>{
     }
 }
   const dispatch = useDispatch()
+  const addProductToCart = (cartDetails)=>{
+    dispatch(addToCart(cartDetails))
+    toast.info('Product Added to Cart.  🛒 ✅',{position:'top-right'})
+  }
   const {pid}=useParams()
   useEffect(()=>{
     window.scrollTo(0, 0)
@@ -30,37 +35,6 @@ const handleAddcount=()=>{
 if(isLoading){
     return <LoadingScreen/>
 }
-    const product={}
-  const relatedProducts = [
-    {
-      id: 1,
-      name: 'Bell Peppers Mix',
-      price: 150,
-      discount: '15% OFF',
-      image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd64e12?w=300&h=300&fit=crop',
-    },
-    {
-      id: 2,
-      name: 'Fresh Cucumber',
-      price: 45,
-      discount: '5% OFF',
-      image: 'https://images.unsplash.com/photo-1604980701429-91e835e5e97f?w=300&h=300&fit=crop',
-    },
-    {
-      id: 3,
-      name: 'Organic Carrots',
-      price: 80,
-      discount: '10% OFF',
-      image: 'https://images.unsplash.com/photo-1599599810694-b5ac4dd64e12?w=300&h=300&fit=crop',
-    },
-    {
-      id: 4,
-      name: 'Green Lettuce',
-      price: 65,
-      discount: '8% OFF',
-      image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=300&h=300&fit=crop',
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -159,13 +133,17 @@ if(isLoading){
               ):(
 
             <>
-            <button className="w-full bg-green-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-green-700 transition-colors mb-4">
+            <button onClick={()=>{
+              addProductToCart({productId:singleProduct._id,qty:count})
+            }} className="w-full bg-green-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-green-700 transition-colors mb-4">
               Add to Cart
             </button>
 
 
-            <Link to={'/auth/cart'} className="w-full bg-gray-100 text-gray-900 py-4 rounded-lg font-bold text-lg hover:bg-gray-200 transition-colors">
-              Buy Now
+            <Link to={'/auth/cart'} >
+              <button onClick={()=>{
+              addProductToCart({productId:singleProduct._id,qty:count})
+            }} className="w-full bg-gray-100 text-gray-900 py-4 rounded-lg font-bold text-lg hover:bg-gray-200 transition-colors" >Buy Now</button>
             </Link>
             </>
               )

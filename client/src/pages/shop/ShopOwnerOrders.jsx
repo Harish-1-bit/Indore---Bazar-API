@@ -25,7 +25,6 @@ function ShopOwnerOrders() {
     setOrderDetail(orderDetail)
     setModalOrder(modalOrder ? false:true)
   }
-
   useEffect(()=>{
     dispatch(getAllOrders())
     if(shopError && shopErrorMessage){
@@ -105,7 +104,7 @@ return (
                 <td className="px-6 py-4">
                   <span className={`inline-block px-3 py-1 text-xs font-medium ${order.status === 'delivered'?'bg-green-100 text-green-700':order.status === 'dispatched'? 'bg-amber-100 text-amber-700':'bg-red-100 text-red-700'} rounded-full`}>
                     {
-                      order.status === 'delivered'? 'Delivered': order.status === 'dispatched'? 'Dispatched' : 'Pending'
+                      order.status === 'delivered'? 'Delivered': order.status === 'dispatched'? 'Dispatched' : order.status === "placed"?'Placed':'Cancelled'
                     }
                   </span>
                 </td>

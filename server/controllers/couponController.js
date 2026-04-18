@@ -3,7 +3,7 @@ import Coupon from "../models/couponModels.js"
 const getCoupons = async(req,res)=>{
     const shopId = req.params.sid
 
-    const coupon = await Coupon.find({shop:shopId})
+    const coupon = await Coupon.find({shop:shopId}).populate('shop')
 
     if(!coupon){
         res.status(404)

@@ -39,11 +39,6 @@ function ShopOwnerLayout({ children, activePage = 'Dashboard' }) {
               <Store className="w-5 h-5" />
               <span className="ml-3">Shop Profile</span>
             </Link>
-
-            <a href="#" className={`flex items-center px-4 py-3 rounded-lg transition ${activePage === 'Settings' ? 'bg-emerald-500 text-white' : 'text-slate-300 hover:bg-slate-800'}`}>
-              <Settings className="w-5 h-5" />
-              <span className="ml-3">Settings</span>
-            </a>
           </nav>
         </aside>
 

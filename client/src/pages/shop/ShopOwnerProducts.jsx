@@ -86,7 +86,6 @@ function ShopOwnerProducts() {
             <tbody className="divide-y divide-slate-200">
 {
   shopProducts.map((product)=>{
-    console.log(product.productImage)
     return (
                     <tr key={product._id} className="hover:bg-slate-50">
                 <td className="px-6 py-4">

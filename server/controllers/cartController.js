@@ -3,17 +3,24 @@ import Product from "../models/productsModels.js"
 
 const getAllcart = async(req,res)=>{
         const userId = req.user.id
-    const cart = await Cart.findOne({user:userId}).populate("products.product")
+    const cart = await Cart.findOne({user:userId}).populate("products.product").populate('user').populate({
+      path: 'products.product',
+      populate: {
+        path: 'shop'
+      }
+    })
     if(!cart){
         res.status(200)
         .json({
             products:[]
         })
     }
+
     res.status(200)
     .json(cart)
     
 }
+
 
 const addCart = async(req,res)=>{
     const userId = req.user.id
@@ -66,58 +73,58 @@ const addCart = async(req,res)=>{
 
     res.status(200).json(cart)
 }
+const updateCart = async (req, res) => {
+    const { productId, qty } = req.body;
+    const userId = req.user._id;
 
-const updateCart = async(req,res)=>{
-    const userId = req.user.id
-    
-    // validate product exists
-    const {productId, qty} = req.body
-    const product = await Product.findById(productId)
-    if(!product){
-        res.status(404)
-        throw new Error("product not found")
-    }
-    // is product is stock
-    if(product.stock<qty){
+    // Validate quantity
+    if (qty < 1) {
         res.status(400)
-        throw new Error("Insufficient Stock")
+        throw new Error("Quantity must be at least 1")
     }
 
-    let cart = await Cart.findOne({user:userId})
+    // Find cart
+    const cart = await Cart.findOne({ user: userId });
 
-
-    // find users cart
-    if(!cart){
-        cart = new Cart({
-            user:userId,
-            products:[{product:productId,qty}]
-        })
-    }else{
-        // check if product is already in cart
-        const productIndex = cart.products.findIndex((item)=>{
-           return  item.product.toString()===productId
-        })
-        if(productIndex > -1){
-            // update quantity
-            cart.products[productIndex].qty += parseInt(qty)
-
-            // check quantity against stock
-            if(cart.products[productIndex].qty >product.stock){
-                res.status(400)
-                throw new Error("Quantity exceeds the Avaialable stocks")
-            }
-        }else{
-            // Add New product to cart
-            cart.products.push({product:productId,qty})
-        }
+    if (!cart) {
+        res.status(404)
+        throw new Error("Cart not found")
     }
 
-    await cart.save()
+    // Find product in cart
+    const productIndex = cart.products.findIndex(
+        (item) => item.product.toString() === productId
+    );
 
-    await cart.populate("products.product")
+    if (productIndex === -1) {
+        res.status(404)
+        throw new Error("Product not found in cart")
+    }
 
-    res.status(200).json(cart)
+    // Check stock availability
+    const product = await Product.findById(productId);
+    if (!product) {
+        res.status(404)
+        throw new Error("Product not found")
+    }
+
+    if (qty > product.stock) {
+        res.status(400)
+        throw new Error("Quantity exceeds available stock")
+    }
+
+    // Update quantity
+    cart.products[productIndex].qty = qty;
+
+    await cart.save();
+    await cart.populate('products.product');
+    await cart.populate('products.product.shop')
+    await cart.populate('user')
+
+    res.status(200).json(cart);
 }
+
+
 const removeCart = async(req,res)=>{
     const {productId} = req.params
     const userId=req.user._id
@@ -133,7 +140,8 @@ const removeCart = async(req,res)=>{
 
     await cart.save()
     await cart.populate("products.product")
-
+    await cart.populate("products.product.shop")
+    await cart.populate('user')
     res.status(200).json(cart)
 }
 

@@ -4,6 +4,9 @@ import { useLocation } from 'react-router-dom'
 const Footer = () => {
     const location = useLocation()
   console.log(location)
+  if(location.pathname.includes('chat')){
+    return <></>
+  }
   return (
     <footer className={`relative bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8 z-50 ${location.pathname.includes('/shop')? 'hidden': 'block'}`}>
         <div className="max-w-7xl mx-auto">
@@ -11,9 +14,9 @@ const Footer = () => {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">SM</span>
+                  <span className="text-white font-bold text-xl">IB</span>
                 </div>
-                <span className="text-2xl font-bold">ShopMart</span>
+                <span className="text-2xl font-bold">Indore Bazar</span>
               </div>
               <p className="text-gray-400">Your trusted partner for fresh groceries from local shops.</p>
             </div>

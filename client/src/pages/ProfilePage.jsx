@@ -5,6 +5,7 @@ import { Store, X, ChevronRight, Mail, Phone, MapPin, LogOut, Package, User } fr
 import { useDispatch, useSelector } from "react-redux"
 import { getUsersOrder, requestForShop } from "../features/auth/AuthSlice"
 import OrderDetailsModal from "../components/shop/OrderDetailModal"
+import LoadingScreen from "../components/LoadingScreen"
 
 export default function UserProfilePage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -18,7 +19,7 @@ export default function UserProfilePage() {
     address:'',
     shopPhone:''
   })
-  const {user,order,shopStatus}=useSelector(state=>state.auth)
+  const {user,order,shopStatus,isLoading}=useSelector(state=>state.auth)
   const dispatch =useDispatch()
 
   const handleChange=(e)=>{
@@ -50,6 +51,10 @@ export default function UserProfilePage() {
   useEffect(()=>{
     dispatch(getUsersOrder())
   },[])
+
+  if(isLoading){
+    return <LoadingScreen/>
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -192,7 +197,7 @@ export default function UserProfilePage() {
 
       {/* Shop Owner Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full border border-gray-200 p-8">
             {shopStatus ? (
               <div className="text-center">
